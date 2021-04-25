@@ -77,23 +77,28 @@ func TestFindChartURL(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	name := "alpine"
-	version := "0.1.0"
-	repoURL := "http://example.com/charts"
+	tests := []struct {
+		name, version, repoURL, expectChurl, expectUserName, expectPassword string
+	}{
+		{name: "alpine", version: "0.1.0", repoURL: "http://example.com/charts", expectChurl: "https://charts.helm.sh/stable/alpine-0.1.0.tgz", expectUserName: "", expectPassword: ""},
+		{name: "helm-test", version: "master", repoURL: "git:https://github.com/rally25rs/helm-test-chart.git", expectChurl: "git:https://github.com/rally25rs/helm-test-chart.git", expectUserName: "", expectPassword: ""},
+	}
+	for _, tt := range tests {
+		churl, username, password, err := m.findChartURL(tt.name, tt.version, tt.repoURL, repos)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if churl != tt.expectChurl {
+			t.Errorf("Unexpected URL %q", churl)
+		}
+		if username != tt.expectUserName {
+			t.Errorf("Unexpected username %q", username)
+		}
+		if password != tt.expectPassword {
+			t.Errorf("Unexpected password %q", password)
+		}
+	}
 
-	churl, username, password, err := m.findChartURL(name, version, repoURL, repos)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if churl != "https://charts.helm.sh/stable/alpine-0.1.0.tgz" {
-		t.Errorf("Unexpected URL %q", churl)
-	}
-	if username != "" {
-		t.Errorf("Unexpected username %q", username)
-	}
-	if password != "" {
-		t.Errorf("Unexpected password %q", password)
-	}
 }
 
 func TestGetRepoNames(t *testing.T) {
