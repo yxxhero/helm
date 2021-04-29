@@ -357,6 +357,15 @@ func (m *Manager) downloadAll(deps []*chart.Dependency) error {
 
 			dl.Options = append(dl.Options, getter.WithTagName(version))
 			dl.Options = append(dl.Options, getter.WithChartName(dep.Name))
+			dl.Options = append(dl.Options, getter.WithChartName(dep.Name))
+
+			var contextDir string
+			if dep.ContextDir == "" {
+				contextDir = "/"
+			} else {
+				contextDir = dep.ContextDir
+			}
+			dl.Options = append(dl.Options, getter.WithContextDir(contextDir))
 
 			if m.Debug {
 				fmt.Fprintf(m.Out, "Downloading %s from git repo %s\n", dep.Name, churl)

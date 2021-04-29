@@ -41,6 +41,7 @@ type options struct {
 	userAgent             string
 	version               string
 	chartName             string
+	contextDir            string
 	registryClient        *registry.Client
 	timeout               time.Duration
 }
@@ -67,6 +68,12 @@ func WithBasicAuth(username, password string) Option {
 func WithChartName(chartName string) Option {
 	return func(opts *options) {
 		opts.chartName = chartName
+	}
+}
+
+func WithContextDir(contextDir string) Option {
+	return func(opts *options) {
+		opts.contextDir = contextDir
 	}
 }
 

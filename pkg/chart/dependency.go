@@ -47,6 +47,10 @@ type Dependency struct {
 	ImportValues []interface{} `json:"import-values,omitempty"`
 	// Alias usable alias to be used for the chart
 	Alias string `json:"alias,omitempty"`
+	// Name is the name of the dependency.
+	//
+	// This must mach the name in the dependency's Chart.yaml.
+	ContextDir string `json:"context-dir,omitempty"`
 }
 
 // Validate checks for common problems with the dependency datastructure in
