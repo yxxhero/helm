@@ -55,8 +55,18 @@ func AtomicWriteFile(filename string, reader io.Reader, mode os.FileMode) error 
 	return fs.RenameWithFallback(tempName, filename)
 }
 
-func CompressDirToTgz(chartTmpDir, tmpdir, contextDir string) (*bytes.Buffer, error) {
+func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
 	// tar => gzip => buf
+
+	_, err := os.Stat(chartTmpDir)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = os.Stat(tmpdir)
+	if err != nil {
+		return nil, err
+	}
 
 	buf := bytes.NewBuffer(nil)
 	zr := gzip.NewWriter(buf)

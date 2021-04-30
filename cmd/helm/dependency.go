@@ -80,6 +80,7 @@ A repository can be defined as a git URL. The path must start with a prefix of
     - name: nginx
       version: "master"
       repository: "git:https://github.com/helm/helm-chart.git"
+      context-dir: "helm/chart"
 
 The 'repository' can be the https or ssh URL that you would use to clone a git
 repo or add as a git remote, prefixed with 'git:'.
@@ -99,8 +100,8 @@ url, it may cause Helm to hang. Input is not forwarded to the child git
 process, so it will not be able to receive user input. For private repos
 it is recommended to use an SSH git url, and have your git client configured
 with an SSH cert that does not require a password.
-* The helm chart and 'Chart.yaml' must be in the root of the git repo.
-The chart cannot be loaded from a subdirectory.
+* The helm chart and 'Chart.yaml' can be in the root of the git repo or  a subdirectory.
+context-dir config the git repo contextDir.
 `
 
 const dependencyListDesc = `

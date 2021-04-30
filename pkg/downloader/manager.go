@@ -357,7 +357,6 @@ func (m *Manager) downloadAll(deps []*chart.Dependency) error {
 
 			dl.Options = append(dl.Options, getter.WithTagName(version))
 			dl.Options = append(dl.Options, getter.WithChartName(dep.Name))
-			dl.Options = append(dl.Options, getter.WithChartName(dep.Name))
 
 			var contextDir string
 			if dep.ContextDir == "" {

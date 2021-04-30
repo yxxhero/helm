@@ -114,6 +114,7 @@ func (r *Resolver) Resolve(reqs []*chart.Dependency, repoNames map[string]string
 				Name:       d.Name,
 				Repository: d.Repository,
 				Version:    d.Version,
+				ContextDir: d.ContextDir,
 			}
 			continue
 		}
