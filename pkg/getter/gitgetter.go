@@ -95,7 +95,7 @@ func (g *GITGetter) get(href string) (*bytes.Buffer, error) {
 	}
 
 	if contextDir != "/" {
-		err = os.Rename(filepath.Join(tmpDir, ".helmignore"), chartTmpDir)
+		err = os.Rename(filepath.Join(tmpDir, ".helmignore"), filepath.Join(chartTmpDir, ".helmignore"))
 		if err != nil {
 			return nil, fmt.Errorf("Can't move .helmignore to %s. %s", chartTmpDir, err)
 		}
