@@ -57,7 +57,6 @@ func AtomicWriteFile(filename string, reader io.Reader, mode os.FileMode) error 
 }
 
 func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
-<<<<<<< HEAD
 	// tar => gzip => buf
 
 	_, err := os.Stat(chartTmpDir)
@@ -70,20 +69,6 @@ func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-=======
-
-	_, err := os.Stat(chartTmpDir)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = os.Stat(tmpdir)
-	if err != nil {
-		return nil, err
-	}
-
-	// tar => gzip => buf
->>>>>>> 8fd9b0b4... add unittest for git:// protocol
 	buf := bytes.NewBuffer(nil)
 	zr := gzip.NewWriter(buf)
 	zr.ModTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
