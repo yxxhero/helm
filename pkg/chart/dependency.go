@@ -47,6 +47,8 @@ type Dependency struct {
 	ImportValues []interface{} `json:"import-values,omitempty"`
 	// Alias usable alias to be used for the chart
 	Alias string `json:"alias,omitempty"`
+	// ContextDir is the name of the git sub dir for helm chart.
+	ContextDir string `json:"context-dir,omitempty"`
 }
 
 // Validate checks for common problems with the dependency datastructure in

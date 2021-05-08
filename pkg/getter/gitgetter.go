@@ -63,6 +63,7 @@ func (g *GITGetter) get(href string) (*bytes.Buffer, error) {
 	gitURL := strings.TrimPrefix(href, "git:")
 	version := g.opts.version
 	chartName := g.opts.chartName
+	contextDir := g.opts.contextDir
 	if version == "" {
 		return nil, fmt.Errorf("The version must be a valid tag or branch name for the git repo, not nil")
 	}
@@ -70,14 +71,16 @@ func (g *GITGetter) get(href string) (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, err
 	}
-	chartTmpDir := filepath.Join(tmpDir, chartName)
-
-	if err := os.MkdirAll(chartTmpDir, 0755); err != nil {
+	tmpContextDir, err := ioutil.TempDir("", "helm")
+	if err != nil {
 		return nil, err
 	}
-	defer os.RemoveAll(tmpDir)
+	chartTmpDir := filepath.Join(tmpContextDir, chartName)
 
-	if err = gitCloneTo(gitURL, version, chartTmpDir); err != nil {
+	defer os.RemoveAll(tmpDir)
+	defer os.RemoveAll(tmpContextDir)
+
+	if err = gitCloneTo(gitURL, version, tmpDir); err != nil {
 		return nil, fmt.Errorf("Unable to retrieve git repo. %s", err)
 	}
 
@@ -86,7 +89,19 @@ func (g *GITGetter) get(href string) (*bytes.Buffer, error) {
 	// To prevent the git history from bleeding into the charts archive, append/create .helmignore.
 	g.ensureGitDirIgnored(chartTmpDir)
 
-	buf, err := fileutil.CompressDirToTgz(chartTmpDir, tmpDir)
+	err = os.Rename(strings.TrimSuffix(filepath.Join(tmpDir, contextDir), "/"), chartTmpDir)
+	if err != nil {
+		return nil, fmt.Errorf("Can't move dir %s to %s. %s", filepath.Join(tmpDir, contextDir), chartTmpDir, err)
+	}
+
+	if contextDir != "/" {
+		err = os.Rename(filepath.Join(tmpDir, ".helmignore"), filepath.Join(chartTmpDir, ".helmignore"))
+		if err != nil {
+			return nil, fmt.Errorf("Can't move .helmignore to %s. %s", chartTmpDir, err)
+		}
+	}
+
+	buf, err := fileutil.CompressDirToTgz(chartTmpDir, tmpContextDir)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to tar and compress dir %s to tgz file. %s", tmpDir, err)
 	}

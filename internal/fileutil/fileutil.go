@@ -57,6 +57,7 @@ func AtomicWriteFile(filename string, reader io.Reader, mode os.FileMode) error 
 }
 
 func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
+	// tar => gzip => buf
 
 	_, err := os.Stat(chartTmpDir)
 	if err != nil {
@@ -68,7 +69,6 @@ func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	// tar => gzip => buf
 	buf := bytes.NewBuffer(nil)
 	zr := gzip.NewWriter(buf)
 	zr.ModTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
