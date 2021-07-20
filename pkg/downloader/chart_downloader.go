@@ -116,7 +116,7 @@ func (c *ChartDownloader) DownloadTo(ref, version, dest string) (string, *proven
 		name = fmt.Sprintf("%s-%s.tgz", name, version)
 	}
 	if scheme == "git" {
-		gitGetter, ok := g.(*getter.GITGetter)
+		gitGetter, ok := g.(*getter.GitGetter)
 		if !ok {
 			return "", nil, fmt.Errorf("can't convert to GITGetter")
 		}
