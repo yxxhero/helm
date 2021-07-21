@@ -67,8 +67,8 @@ func TestCompressDirToTgz(t *testing.T) {
 
 	testDataDir := "testdata"
 	chartTestDir := "testdata/helmchart"
-	expectMd5Value := "218a88e89fa53efc6dd56aab27159880"
-	expectChartBytesLen := 3998
+	expectMd5Value := "246957f15e1433e5cde967f97124bb1a"
+	expectChartBytesLen := 4389
 
 	chartBytes, err := CompressDirToTgz(chartTestDir, testDataDir)
 	if err != nil {

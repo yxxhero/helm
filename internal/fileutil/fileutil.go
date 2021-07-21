@@ -93,7 +93,7 @@ func CompressDirToTgz(chartTmpDir, tmpdir string) (*bytes.Buffer, error) {
 		header.ModTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
 		header.AccessTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
 		header.ChangeTime = time.Date(1977, time.May, 25, 0, 0, 0, 0, time.UTC)
-		header.Format = tar.FormatGNU
+		header.Format = tar.FormatPAX
 
 		// write header
 		if err := tw.WriteHeader(header); err != nil {
